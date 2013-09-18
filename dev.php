@@ -18,9 +18,17 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+ 
+// Developer mode disabled?
+if (!defined('MAGE_IS_DEVELOPER_MODE')) {
+    echo "Access denied";
+    exit;
+}
 
+// Magento
 require_once __DIR__ . '/app/Mage.php';
 
+// The toolbar
 class Dev
 {
 
