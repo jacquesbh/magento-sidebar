@@ -65,14 +65,18 @@ class Dev
             }
             return $this->renderImg($img);
         } elseif ($action = $req->getParam('action')) {
-            $method = $this->_camelize($action) . 'Action';
-            if (method_exists($this, $method)) {
-                if ($action != 'login') {
-                    $this->auth();
-                }
-                return $this->$method();
+            if ($action === 'jsonAuth') {
+                return $this->auth(true);
             } else {
-                exit('bad request');
+                $method = $this->_camelize($action) . 'Action';
+                if (method_exists($this, $method)) {
+                    if ($action != 'login') {
+                        $this->auth();
+                    }
+                    return $this->$method();
+                } else {
+                    exit('bad request');
+                }
             }
         }
 
@@ -180,7 +184,7 @@ class Dev
         exit;
     }
 
-    public function auth()
+    public function auth($json = false)
     {
         if (!$this->getSession('is_auth')) {
             $req = Mage::app()->getRequest();
@@ -205,9 +209,19 @@ class Dev
                 header('Location: ' . $this->getUrl());
                 exit;
             } else {
-                header('Location: ' . $this->getUrl('action', 'login'));
+                if ($json) {
+                    header('Content-Type: application/json');
+                    echo json_encode(array('success' => false, 'redirect' => $this->getUrl('action', 'login')));
+                } else {
+                    header('Location: ' . $this->getUrl('action', 'login'));
+                }
                 exit;
             }
+        }
+        if ($json) {
+            header('Content-Type: application/json');
+            echo json_encode(array('success' => true));
+            exit;
         }
     }
 
@@ -689,7 +703,7 @@ iVBORw0KGgoAAAANSUhEUgAAAdUAAACfCAMAAACY07N7AAAC2VBMVEX///8AAAAAAAD5+fn///8AAAD/
         body { padding-top: 20px; }
     </style>
 </head>
-<body>
+<body id="login">
 
 <div class="container-fluid">
     <?php if (isset($error)): ?>
@@ -727,6 +741,25 @@ img2.src = '<?php echo $this->getUrl('img', 'glyphicons-halflings-white.png'); ?
 
 (function ($) {
     $(document).ready(function () {
+
+        // Check auth?
+        if (!$('#login').length) {
+            var authTimer = 5000;
+            // Every 10 seconds, we try auth, if fail -> redirect, else: nothing
+            var tryAuth = function () {
+                $.ajax({
+                    url: '<?php echo $this->getUrl('action', 'jsonAuth'); ?>',
+                    success: function (data, textStatus, jqXHR) {
+                        if (!data.success) {
+                            window.location.href = data.redirect;
+                        }
+                    },
+                    dataType: 'json'
+                });
+                setTimeout(tryAuth, authTimer);
+            }
+            setTimeout(tryAuth, authTimer);
+        }
 
         // Hints
         $('#template_hints button').click(function () {
