@@ -20,7 +20,7 @@
  */
  
 // Developer mode disabled?
-if (!defined('MAGE_IS_DEVELOPER_MODE')) {
+if (!isset($_SERVER['MAGE_IS_DEVELOPER_MODE'])) {
     echo "Access denied";
     exit;
 }
