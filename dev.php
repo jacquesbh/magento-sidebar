@@ -959,6 +959,8 @@ img2.src = '<?php echo $this->getUrl('img', 'glyphicons-halflings-white.png'); ?
 <footer class="text-center small">
     <a href="http://jacques.sh"><img src="<?php echo $this->getUrl('img', 'jbh_logo.png'); ?>" class="img-circle" style="border: 1px solid #ccc;" /></a>
     <small>By <a href="http://jacques.sh">Jacques Bodin-Hullin</a></small>
+    <br/>
+    <a href="#" onclick="window.location.href = '<?php echo $this->getUrl(); ?>'; return false;" style="font-size: 10px;">reload</a>
 </footer>
 
 </div>
