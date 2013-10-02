@@ -14,7 +14,7 @@ Click on the bookmark and the page appears on the left (or right..).
 
 Run the following command in your main magento directory:
 
-    $ wget --no-check-certificate https://raw.github.com/jacquesbh/magento-sidebar/master/dev.php
+    wget --no-check-certificate https://raw.github.com/jacquesbh/magento-sidebar/master/dev.php
 
 ## Security
 
