@@ -10,6 +10,12 @@ Then create a bookmark with the property "Load this bookmark in the sidebar" (or
 
 Click on the bookmark and the page appears on the left (or right..).
 
+### Install
+
+Run the following command in your main magento directory:
+
+    $ wget --no-check-certificate https://raw.github.com/jacquesbh/magento-sidebar/master/dev.php
+
 ## Security
 
 The file will ask username and password. Use the magento admin access.
