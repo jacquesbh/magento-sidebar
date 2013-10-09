@@ -140,12 +140,7 @@ class Dev
 
     public function setSession($name, $value = null)
     {
-        $sess = Mage::getSingleton('core/session');
-        if (!$sess->getData(self::SESSION_NAMESPACE)) {
-            $sess->setData(self::SESSION_NAMESPACE, new Varien_Object);
-        }
-
-        $sess = $sess->getData(self::SESSION_NAMESPACE);
+        $sess = Mage::getSingleton('core/session', array('name' => self::SESSION_NAMESPACE))->start();
 
         if (is_array($name)) {
             foreach ($name as $k => $v) {
@@ -160,18 +155,14 @@ class Dev
 
     public function getSession($name = null)
     {
-        $sess = Mage::getSingleton('core/session');
-        if (!$sess->getData(self::SESSION_NAMESPACE)) {
-            $sess->setData(self::SESSION_NAMESPACE, new Varien_Object);
-        }
-        $sess = $sess->getData(self::SESSION_NAMESPACE);
+        $sess = Mage::getSingleton('core/session', array('name' => self::SESSION_NAMESPACE))->start();
 
         if ($name === null) {
             return $sess;
         }
 
-        if (!isset($_SESSION[self::SESSION_NAMESPACE][$name])) {
-            $_SESSION[self::SESSION_NAMESPACE][$name] = null;
+        if (!$sess->hasData($name)) {
+            $sess->setData($name, null);
         }
 
         return $sess->getData($name);
