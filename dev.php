@@ -479,6 +479,11 @@ class Dev
                     Mage::getModel('core/design_package')->cleanMergedJsCss();
                     Mage::dispatchEvent('clean_media_cache_after');
                     break;
+                case 'apc':
+                    apc_clear_cache();
+                    apc_clear_cache('user');
+                    apc_clear_cache('opcode');
+                    break;
                 default:
                     $this->renderJson();
                     break;
@@ -941,6 +946,7 @@ img2.src = '<?php echo $this->getUrl('img', 'glyphicons-halflings-white.png'); ?
                     <button type="button" class="btn btn-danger btn-mini flush" data-type="storage"><i class="icon-remove-sign icon-white"></i> Storage</button>
                     <button type="button" class="btn btn-danger btn-mini flush" data-type="images"><i class="icon-remove-sign icon-white"></i> Images</button>
                     <button type="button" class="btn btn-danger btn-mini flush" data-type="medias"><i class="icon-remove-sign icon-white"></i> CSS/JS</button>
+                    <button type="button" class="btn btn-danger btn-mini flush" data-type="apc"><i class="icon-remove-sign icon-white"></i> APC</button>
                 </p>
 
                 <?php foreach ($this->getCacheCollection() as $cache): ?>
