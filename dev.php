@@ -26,7 +26,13 @@ if (!isset($_SERVER['MAGE_IS_DEVELOPER_MODE'])) {
 }
 
 // Magento
-require_once __DIR__ . '/app/Mage.php';
+$mageFilenames = array(__DIR__ . '/app/Mage.php', __DIR__ . '/../app/Mage.php', __DIR__ . '/../../app/Mage.php');
+foreach ($mageFilenames as $mageFilename) {
+    if (is_file($mageFilename)) {
+        require_once $mageFilename;
+        break;
+    }
+}
 
 // The toolbar
 class Dev
